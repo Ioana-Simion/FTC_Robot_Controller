@@ -89,7 +89,7 @@ public class auto_mode_blue extends LinearVisionOpMode {
 
             motorCatapulta.setPower(0);
 
-            while(gyro.getHeading()<85 || gyro.getHeading()>95)
+            while(gyro.getHeading()<82 || gyro.getHeading()>98)// rotire stanga
                 change_motor_power(0.1,0.1,0.1,0.1);
             change_motor_power(0,0,0,0);
             telemetry.addData("distanta",rangeSensor.getDistance(DistanceUnit.CM));
@@ -143,7 +143,7 @@ public class auto_mode_blue extends LinearVisionOpMode {
 
 
             mRuntime.reset();
-            while(mRuntime.time()<1)
+            while(mRuntime.time()<1.5)
                 change_motor_power(-0.2,-0.2,0.2,0.2);//mers dreapta si apasa pe beacon
             change_motor_power(0,0,0,0);
 
@@ -155,13 +155,13 @@ public class auto_mode_blue extends LinearVisionOpMode {
             servo1.setPosition(0.5);
             telemetry.addData("detected light",optical1.getLightDetected());
             telemetry.update();
-            while(optical1.getLightDetected()<0.02) {
-                change_motor_power(-0.25, 0.25, -0.25, 0.25);
+            /*while(optical1.getLightDetected()<0.02) {
+                change_motor_power(-0.15, 0.15, -0.15, 0.15);
                 if (gyro.getHeading() < 85 || gyro.getHeading() > 95) {
                     while (gyro.getHeading() < 85 || gyro.getHeading() > 95) {
                         if (gyro.getHeading() > 90) {
                             while (gyro.getHeading() < 85 || gyro.getHeading() > 95) {
-                                change_motor_power(-0.275, 0.25, -0.275, 0.25);
+                                change_motor_power(-0.175, 0.15, -0.175, 0.15);
                                 telemetry.addData("Gyro:", gyro.getHeading());
                                 telemetry.update();
                             }
@@ -170,7 +170,7 @@ public class auto_mode_blue extends LinearVisionOpMode {
                         }
                         if (gyro.getHeading() < 90) {
                             while (gyro.getHeading() < 85 || gyro.getHeading() > 95) {
-                                change_motor_power(-0.25, 0.275, -0.25, 0.275);
+                                change_motor_power(-0.15, 0.175, -0.15, 0.175);
                                 telemetry.addData("Gyro:", gyro.getHeading());
                                 telemetry.update();
                             }
@@ -179,21 +179,37 @@ public class auto_mode_blue extends LinearVisionOpMode {
                         }
                     }
                 }
+            }*/
+                if(rangeSensor.getDistance(DistanceUnit.CM)!=20) {//redresarea distanta
+                    while (rangeSensor.getDistance(DistanceUnit.CM) < 20)
+                        change_motor_power(0.1, 0.1, -0.1, -0.1);
+                    while(rangeSensor.getDistance(DistanceUnit.CM)>20)
+                        change_motor_power(-0.1,-0.1,0.1,0.1);
+                }
+            if(gyro.getHeading()!=90) { //redresare gyro
+                if (gyro.getHeading() < 90)
+                    while (gyro.getHeading()!=90)
+                        change_motor_power(0.07, 0.07, 0.07, 0.07);
+                if(gyro.getHeading() > 90)
+                    while(gyro.getHeading()!=90)
+                        change_motor_power(-0.07,-0.07,-0.07,-0.07);
             }
             change_motor_power(0,0,0,0);
-
+            while(optical1.getLightDetected()<0.02)
+                change_motor_power(-0.15,0.15,-0.15,0.15);
+            change_motor_power(0,0,0,0);
             telemetry.addData("beacon colors:",beacon.getAnalysis().getColorString());
             telemetry.update();
             if(beacon.getAnalysis().getColorString().charAt(3)==','){
-                servo1.setPosition(0.95);
+                servo1.setPosition(1);
             }
             else {
-                servo1.setPosition(0.05);
+                servo1.setPosition(0);
             }
 
 
             mRuntime.reset();
-            while(mRuntime.time()<1)
+            while(mRuntime.time()<1.5)
                 change_motor_power(-0.2,-0.2,0.2,0.2);//mers dreapta si apasa pe beacon
             change_motor_power(0,0,0,0);
 
